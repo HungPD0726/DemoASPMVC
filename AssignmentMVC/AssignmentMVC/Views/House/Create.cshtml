@@ -1,0 +1,64 @@
+@model AssignmentMVC.ViewModels.House.HouseCreateViewModel
+
+@{
+    ViewData["Title"] = "Thêm nhà mới";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Thêm nhà mới</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="HouseName" class="form-label"></label>
+                            <input asp-for="HouseName" class="form-control" placeholder="Nhập tên nhà" />
+                            <span asp-validation-for="HouseName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Information" class="form-label"></label>
+                            <textarea asp-for="Information" class="form-control" rows="4"
+                                placeholder="Mô tả chi tiết về nhà"></textarea>
+                            <span asp-validation-for="Information" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PowerPrice" class="form-label"></label>
+                                <input asp-for="PowerPrice" class="form-control" type="number" step="0.01"
+                                    placeholder="3500" />
+                                <span asp-validation-for="PowerPrice" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="WaterPrice" class="form-label"></label>
+                                <input asp-for="WaterPrice" class="form-control" type="number" step="0.01"
+                                    placeholder="15000" />
+                                <span asp-validation-for="WaterPrice" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-check-circle"></i> Tạo nhà
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

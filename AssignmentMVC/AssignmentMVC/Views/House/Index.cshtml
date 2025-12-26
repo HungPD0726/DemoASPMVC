@@ -1,0 +1,90 @@
+@model List<AssignmentMVC.ViewModels.House.HouseViewModel>
+
+@{
+    ViewData["Title"] = "Danh sách nhà";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Danh sách nhà</h2>
+        @if (Context.Request.Cookies.ContainsKey("AuthToken"))
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Thêm nhà mới
+            </a>
+        }
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <h4>Chưa có nhà nào!</h4>
+            <p>Hãy thêm nhà mới để bắt đầu.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên nhà</th>
+                        <th>Thông tin</th>
+                        <th>Giá điện (VNĐ/kWh)</th>
+                        <th>Giá nước (VNĐ/m³)</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var house in Model)
+                    {
+                        <tr>
+                            <td>@house.HouseID</td>
+                            <td><strong>@house.HouseName</strong></td>
+                            <td>@(house.Information.Length > 50 ? house.Information.Substring(0, 50) + "..." :
+                                    house.Information)</td>
+                            <td>@house.PowerPrice.ToString("N0")</td>
+                            <td>@house.WaterPrice.ToString("N0")</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@house.HouseID" class="btn btn-sm btn-info"
+                                        title="Xem chi tiết">
+                                        <i class="bi bi-eye"></i> Chi tiết
+                                    </a>
+                                    @if (Context.Request.Cookies.ContainsKey("AuthToken"))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@house.HouseID" class="btn btn-sm btn-warning"
+                                            title="Chỉnh sửa">
+                                            <i class="bi bi-pencil"></i> Sửa
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@house.HouseID" class="btn btn-sm btn-danger"
+                                            title="Xóa">
+                                            <i class="bi bi-trash"></i> Xóa
+                                        </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

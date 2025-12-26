@@ -1,0 +1,105 @@
+@model AssignmentMVC.ViewModels.House.HouseDetailViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết nhà";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Chi tiết nhà</h2>
+        <div>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại danh sách
+            </a>
+            @if (Context.Request.Cookies.ContainsKey("AuthToken"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.HouseID" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Chỉnh sửa
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">@Model.HouseName</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>ID:</strong> @Model.HouseID
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Chủ nhà ID:</strong> @Model.LandlordID
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <strong>Thông tin:</strong>
+                <p class="mt-2">@Model.Information</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Giá điện:</strong> @Model.PowerPrice.ToString("N0") VNĐ/kWh
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Giá nước:</strong> @Model.WaterPrice.ToString("N0") VNĐ/m³
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Rooms != null && Model.Rooms.Any())
+    {
+        <div class="card shadow mt-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Danh sách phòng</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên phòng</th>
+                                <th>Giá thuê</th>
+                                <th>Diện tích</th>
+                                <th>Sức chứa</th>
+                                <th>Đang ở</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var room in Model.Rooms)
+                            {
+                                <tr class="@(room.IsAvailable ? "" : "table-secondary")">
+                                    <td><strong>@room.RoomName</strong></td>
+                                    <td>@room.Price.ToString("N0") VNĐ</td>
+                                    <td>@room.Area m²</td>
+                                    <td>@room.MaxAmountOfPeople người</td>
+                                    <td>@room.CurrentAmountOfPeople người</td>
+                                    <td>
+                                        @if (room.IsAvailable)
+                                        {
+                                            <span class="badge bg-success">Còn trống</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger">Đã đầy</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning mt-4">
+            <i class="bi bi-exclamation-triangle"></i> Nhà này chưa có phòng nào!
+        </div>
+    }
+</div>
