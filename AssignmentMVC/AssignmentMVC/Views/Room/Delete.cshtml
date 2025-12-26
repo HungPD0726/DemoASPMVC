@@ -1,0 +1,74 @@
+@model AssignmentMVC.ViewModels.Room.RoomViewModel
+
+@{
+    ViewData["Title"] = "Xác nhận xóa phòng";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle"></i> Xác nhận xóa phòng
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Cảnh báo:</strong> Bạn có chắc chắn muốn xóa phòng này không? Hành động này không thể
+                        hoàn tác!
+                    </div>
+
+                    <h5>Thông tin phòng sẽ bị xóa:</h5>
+
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="row mb-2">
+                                <div class="col-md-4"><strong>Tên phòng:</strong></div>
+                                <div class="col-md-8">@Model.RoomName</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4"><strong>Giá thuê:</strong></div>
+                                <div class="col-md-8">@Model.Price.ToString("N0") VNĐ/tháng</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4"><strong>Diện tích:</strong></div>
+                                <div class="col-md-8">@Model.Area m²</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4"><strong>Sức chứa:</strong></div>
+                                <div class="col-md-8">@Model.MaxAmountOfPeople người</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-4"><strong>Đang ở:</strong></div>
+                                <div class="col-md-8">@Model.CurrentAmountOfPeople người</div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.Information))
+                            {
+                                <div class="row mb-2">
+                                    <div class="col-md-4"><strong>Thông tin:</strong></div>
+                                    <div class="col-md-8">@Model.Information</div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <form asp-action="DeleteConfirmed" asp-route-id="@Model.RoomID" asp-route-houseId="@Model.HouseID"
+                        method="post" class="mt-4">
+                        @Html.AntiForgeryToken()
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.HouseID"
+                                class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Xóa phòng
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

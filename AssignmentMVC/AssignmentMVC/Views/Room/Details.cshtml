@@ -1,0 +1,81 @@
+@model AssignmentMVC.ViewModels.Room.RoomViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết phòng";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Chi tiết phòng</h2>
+        <div>
+            <a asp-controller="House" asp-action="Details" asp-route-id="@Model.HouseID" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Quay lại
+            </a>
+            @if (Context.Request.Cookies.ContainsKey("AuthToken"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.RoomID" class="btn btn-warning">
+                    <i class="bi bi-pencil"></i> Chỉnh sửa
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">@Model.RoomName</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>ID:</strong> @Model.RoomID
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Thuộc nhà:</strong>
+                    <a asp-controller="House" asp-action="Details" asp-route-id="@Model.HouseID">
+                        @(string.IsNullOrEmpty(Model.HouseName) ? $"Nhà #{Model.HouseID}" : Model.HouseName)
+                    </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Giá thuê:</strong>
+                    <span class="text-success fs-5">@Model.Price.ToString("N0") VNĐ/tháng</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Diện tích:</strong> @Model.Area m²
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <strong>Số người tối đa:</strong> @Model.MaxAmountOfPeople người
+                </div>
+                <div class="col-md-6 mb-3">
+                    <strong>Đang ở:</strong> @Model.CurrentAmountOfPeople người
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <strong>Trạng thái:</strong>
+                @if (Model.IsAvailable)
+                {
+                    <span class="badge bg-success fs-6">Còn trống (@(Model.MaxAmountOfPeople - Model.CurrentAmountOfPeople)
+                        chỗ)</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger fs-6">Đã đầy</span>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Information))
+            {
+                <div class="mb-3">
+                    <strong>Thông tin phòng:</strong>
+                    <p class="mt-2">@Model.Information</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

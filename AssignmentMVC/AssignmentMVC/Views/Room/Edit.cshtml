@@ -1,0 +1,69 @@
+@model AssignmentMVC.ViewModels.Room.RoomUpdateViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa phòng";
+    var roomId = ViewBag.RoomId;
+    var houseId = ViewBag.HouseId;
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">Chỉnh sửa phòng</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" asp-route-id="@roomId" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="RoomName" class="form-label"></label>
+                            <input asp-for="RoomName" class="form-control" />
+                            <span asp-validation-for="RoomName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label"></label>
+                            <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Area" class="form-label"></label>
+                            <input asp-for="Area" class="form-control" type="number" step="0.1" />
+                            <span asp-validation-for="Area" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="MaxAmountOfPeople" class="form-label"></label>
+                            <input asp-for="MaxAmountOfPeople" class="form-control" type="number" min="1" />
+                            <span asp-validation-for="MaxAmountOfPeople" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Information" class="form-label"></label>
+                            <textarea asp-for="Information" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Information" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Details" asp-route-id="@roomId" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-save"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
